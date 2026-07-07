@@ -1,0 +1,78 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: pg-finder
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/pgfinder}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000
+      connection-timeout: 20000
+      connection-init-sql: SELECT 1
+      data-source-properties:
+        sslmode: require
+        ssl: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+        temp:
+          use_jdbc_metadata_defaults: false
+    show-sql: false
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.3
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 1536
+        similarity-function: cosine
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=1h
+
+springdoc:
+  api-docs:
+    path: /api/docs
+  swagger-ui:
+    path: /api/swagger-ui
+    operationsSorter: method
+
+logging:
+  level:
+    com.pgfinder: DEBUG
+    org.springframework.ai: INFO
+    org.hibernate.SQL: WARN
+
+app:
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+  geo:
+    default-radius-km: 5
+    max-radius-km: 25
+  osm:
+    overpass-url: https://overpass-api.de/api/interpreter
+    nominatim-url: https://nominatim.openstreetmap.org
+  pagination:
+    default-page-size: 20
+    max-page-size: 50

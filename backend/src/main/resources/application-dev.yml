@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+logging:
+  level:
+    com.pgfinder: DEBUG
+    org.hibernate.SQL: DEBUG

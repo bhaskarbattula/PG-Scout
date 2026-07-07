@@ -1,41 +1,39 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/.vercel
+frontend/next-env.d.ts
+frontend/*.tsbuildinfo
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Backend (Spring Boot)
+backend/target/
+backend/.mvn/
+backend/*.class
+backend/*.jar
+backend/*.war
+backend/logs/
+backend/.springBeans
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
 .DS_Store
-*.pem
 
-# debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Misc
+*.pem
+coverage/
