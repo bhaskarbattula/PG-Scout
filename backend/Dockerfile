@@ -10,4 +10,6 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/pg-finder-backend-1.0.0.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
