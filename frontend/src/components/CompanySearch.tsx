@@ -172,8 +172,10 @@ export function CompanySearch({ className = "", onBranchSelect }: CompanySearchP
                 {branches.map((b) => (
                   <button
                     key={b.id}
-                    onClick={() => {
-                      router.push(`/search?branchId=${b.id}`);
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log("Branch clicked:", b.id, b.name);
+                      window.location.href = `/search?branchId=${b.id}`;
                       if (onBranchSelect) onBranchSelect(b);
                       setShowSuggestions(false);
                     }}
