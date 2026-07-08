@@ -25,6 +25,22 @@ function MapCenterUpdater({ center, zoom }: { center: [number, number]; zoom?: n
   return null;
 }
 
+function InvalidateOnVisible() {
+  const { useMap } = require("react-leaflet");
+  const map = useMap();
+
+  useEffect(() => {
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [map]);
+
+  return null;
+}
+
 interface PGMapProps {
   latitude: number;
   longitude: number;
@@ -63,6 +79,7 @@ export function PGMap({ latitude, longitude, name, area, city }: PGMapProps) {
         scrollWheelZoom={true}
       >
         <MapCenterUpdater center={[latitude, longitude]} zoom={15} />
+        <InvalidateOnVisible />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

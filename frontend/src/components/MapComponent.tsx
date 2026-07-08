@@ -51,6 +51,23 @@ function MapCenterUpdater({ center, zoom }: { center?: [number, number]; zoom?: 
   return null;
 }
 
+/** Calls invalidateSize() when the map container resizes (fixes hidden->visible tile issue on mobile). */
+function InvalidateOnVisible() {
+  const { useMap } = require("react-leaflet");
+  const map = useMap();
+
+  useEffect(() => {
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [map]);
+
+  return null;
+}
+
 function MapContent({ listings, center, zoom, onMarkerClick, selectedId }: MapComponentProps) {
   const L = useMemo(() => (typeof window !== "undefined" ? require("leaflet") : null), []);
 
@@ -100,6 +117,7 @@ function MapContent({ listings, center, zoom, onMarkerClick, selectedId }: MapCo
       scrollWheelZoom={true}
     >
       <MapCenterUpdater center={center} zoom={zoom} />
+      <InvalidateOnVisible />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
